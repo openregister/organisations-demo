@@ -3,10 +3,9 @@
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
-        {{organisations}}
         {% for organisation in organisations %}
-          {{organisation.entry.name}}
-          {{organisation.entry.company}}
+          <p>{{organisation.entry.name}}</p>
+          <p>{{organisation.entry.company}}</p>
         {% endfor %}
       </div>
     </div>

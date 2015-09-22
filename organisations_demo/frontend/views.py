@@ -35,6 +35,4 @@ def search():
         {'$regex': name, '$options': 'i'}})
     if not organisations:
         abort(404)
-    for org in organisations:
-        current_app.logger.info(org['entry']['name'])
     return render_template('search.html', organisations=organisations)

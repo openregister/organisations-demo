@@ -1,0 +1,14 @@
+
+{% extends "govuk_template.html" %}
+{% block content %}
+    <div class="grid-row">
+      <div class="column-two-thirds">
+        {{organisations}}
+        {% for organisation in organisations %}
+          {{organisation.entry.name}}
+          {{organisation.entry.company}}
+        {% endfor %}
+      </div>
+    </div>
+{% endblock %}
+

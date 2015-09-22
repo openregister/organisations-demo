@@ -19,16 +19,11 @@ manager.add_command('server', Server(host="0.0.0.0", port=port))
 def populate_index():
     premises_register = app.config['PREMISES_REGISTER']
     feed_url = '%s/feed.json' % premises_register
-    page_size = 1000
     page = 1
-    db = MongoClient(app.config['MONGO_URI'])
-    if isinstance(db, MongoClient):
-        premises = db['lookup']['premises']
-    else:
-        premises = db
-
+    db = MongoClient(app.config['MONGO_URI']).get_default_database()
+    premises = db.premises
     while True:
-        params = {'pageIndex': page, 'pageSize': page_size}
+        params = {'pageIndex': page, 'pageSize': 1000}
         res = requests.get(feed_url, params)
         if res.json():
             for p in res.json():

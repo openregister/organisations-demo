@@ -3,7 +3,32 @@
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
-        <h1 class="heading-large">What?</h1>
+        <div class="search">
+          <h1 class="form-title heading-large">Find out about a company</h1>
+          <form class="form" action="{{url_for('frontend.index')}}" method="POST">
+            <div class="form-group">
+              <div class="{% if form.search_term.errors %}error{% endif %}">
+                <label class="form-label-bold" for="search_term">Enter a company name</label>
+                <span class="form-hint">
+                   At the moment you can search for companies on this site:
+                   <br>
+                    For example, Kinda Foods
+                </span>
+                {{ form.search_term(class_="form-control")|safe }}
+                {% if form.search_term.errors %}
+                  {% for error in form.search_term.errors %}
+                    <span class="error">{{error}}</span>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="button" value="Search">
+            </div>
+            {{ form.csrf_token }}
+          </form>
+        </div><!-- end .search -->
+      </div>
       </div>
     </div>
 {% endblock %}

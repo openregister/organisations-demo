@@ -2,6 +2,8 @@
 '''The app module, containing the app factory function.'''
 from flask import Flask, render_template
 
+from pymongo import MongoClient
+
 # from organisations_demo.extensions import (
 #     #add as needed
 # )
@@ -19,6 +21,7 @@ def create_app(config_filename):
     register_errorhandlers(app)
     register_blueprints(app)
     app.context_processor(asset_path_context_processor)
+    register_db(app)
     return app
 
 def register_errorhandlers(app):
@@ -36,3 +39,8 @@ def register_blueprints(app):
 
 # def register_extensions(app):
 #     pass
+
+
+def register_db(app):
+    db = MongoClient(app.config['MONGO_URI']).get_default_database()
+    app.db = db

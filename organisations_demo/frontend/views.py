@@ -42,11 +42,11 @@ def search():
 
 @frontend.route('/company/<company_number>')
 def company(company_number):
-    company, address, officers = _get_company_details(company_number)
+    company, address, filings = _get_company_details(company_number)
     return render_template('company.html',
                            company=company,
                            address=address,
-                           officers=officers)
+                           filings=filings)
 
 
 def _get_company_details(company_number):
@@ -60,13 +60,14 @@ def _get_company_details(company_number):
 
     url = 'https://api.companieshouse.gov.uk/company/%s/registered-office-address' % company_number
     res = requests.get(url, headers=headers)
-    current_app.logger.info(res.json())
+    # current_app.logger.info(res.json())
     address = res.json()
 
-    url = 'https://api.companieshouse.gov.uk/company/%s/officers' % company_number
+    url = 'https://api.companieshouse.gov.uk/company/%s/filing-history' % company_number
     res = requests.get(url, headers=headers)
-    current_app.logger.info(res.json())
-    officers = res.json()
+    for item in res.json()['items']:
+        current_app.logger.info(item)
+    filings = res.json()
 
-    return (company, address, officers)
+    return (company, address, filings)
 

@@ -11,10 +11,20 @@
     </ul>
     <div id="company-tab" class="tabs-panel">
       <p>{{company.company_name}}</p>
+      <p>Company number: {{company.company_number}}</p>
       <p>{{address.address_line_1}}<br>{{address.locality}}<br>{{address.postal_code}}</p>
+      <p>Last accounts made up to: {{company.annual_return.last_made_up_to}}</p>
+      <p>Next accounts made up to: {{company.annual_return.next_made_up_to}}</p>
+      <p>Next accounts due: {{company.annual_return.next_due}}</p>
     </div>
     <div id="filings-tab" class="tabs-panel">
-        <p>Some stuff about filings</p>
+        {% if filings %}
+          <ul>
+          {% for item in filings['items'] %}
+            <li>{{item.description}} {{item.action_date}}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
     </div>
     <div id="licences-tab" class="tabs-panel">
         <p>Some stuff from approved premises</p>

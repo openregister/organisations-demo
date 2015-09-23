@@ -3,10 +3,17 @@
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
-        {% for organisation in organisations %}
-          <p>{{organisation.entry.name}}</p>
-          <p>{{organisation.entry.company}}</p>
-        {% endfor %}
+        {% if organisations %}
+        <div id="results">
+          <ul>
+            {% for organisation in organisations %}
+              <li>{{organisation.entry.name}}. Company number: <a href="/company/{{organisation.entry.company}}">{{organisation.entry.company}}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
+          <p>No results</p>
+        {% endif %}
       </div>
     </div>
 {% endblock %}

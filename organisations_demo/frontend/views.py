@@ -9,6 +9,8 @@ from flask import (
     url_for
 )
 
+import requests
+
 from organisations_demo.frontend.forms import SearchForm
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
@@ -36,3 +38,12 @@ def search():
     if not organisations:
         abort(404)
     return render_template('search.html', organisations=organisations)
+
+@frontend.route('/company/<company_number>')
+def company(company_number):
+    co_house_api_key = app.config['COMPANIES_HOUSE_API_KEY']
+    headers = {'Authorization': 'Basic '+co_house_api_key}
+    url = 'https://api.companieshouse.gov.uk/company/%s' % company_number
+    res = requests.get(url, headers=headers)
+    current_app.logger.info(res.json())
+    return render_template('company.html', company=res.json())

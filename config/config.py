@@ -7,6 +7,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
     PREMISES_REGISTER = os.environ.get('PREMISES_REGISTER')
     MONGO_URI = os.environ.get('MONGO_URI')
+    COMPANIES_HOUSE_API_KEY = os.environ.get('COMPANIES_HOUSE_API_KEY')
 
 class DevelopmentConfig(Config):
     DEBUG = True

@@ -41,7 +41,7 @@ def search():
 
 @frontend.route('/company/<company_number>')
 def company(company_number):
-    co_house_api_key = app.config['COMPANIES_HOUSE_API_KEY']
+    co_house_api_key = current_app.config['COMPANIES_HOUSE_API_KEY']
     headers = {'Authorization': 'Basic '+co_house_api_key}
     url = 'https://api.companieshouse.gov.uk/company/%s' % company_number
     res = requests.get(url, headers=headers)

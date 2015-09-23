@@ -1340,3 +1340,36 @@ ol {
 #results {
   margin-top: 20px;
 }
+
+.tabs li {
+  list-style:none;
+  display:inline;
+  margin: 0;
+}
+
+.tabs a {
+  display:inline-block;
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0;
+}
+
+.tabs a.active {
+  background-color: #fff;
+  border: solid 1px #bfc1c3;
+  border-bottom: solid 2px #fff;
+  color: #0b0c0c;
+  position: relative;
+  z-index: 5;
+}
+
+.tabs-panel {
+  border-top: solid 1px #bfc1c3;
+  margin-top: -1px;
+  padding-top: 20px;
+}
+
+#company-details {
+  margin-top: 20px;
+}
+

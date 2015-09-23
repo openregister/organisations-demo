@@ -39,11 +39,34 @@ def search():
         abort(404)
     return render_template('search.html', organisations=organisations)
 
+
 @frontend.route('/company/<company_number>')
 def company(company_number):
+    company, address, officers = _get_company_details(company_number)
+    return render_template('company.html',
+                           company=company,
+                           address=address,
+                           officers=officers)
+
+
+def _get_company_details(company_number):
     co_house_api_key = current_app.config['COMPANIES_HOUSE_API_KEY']
     headers = {'Authorization': 'Basic '+co_house_api_key}
+
     url = 'https://api.companieshouse.gov.uk/company/%s' % company_number
     res = requests.get(url, headers=headers)
     current_app.logger.info(res.json())
-    return render_template('company.html', company=res.json())
+    company = res.json()
+
+    url = 'https://api.companieshouse.gov.uk/company/%s/registered-office-address' % company_number
+    res = requests.get(url, headers=headers)
+    current_app.logger.info(res.json())
+    address = res.json()
+
+    url = 'https://api.companieshouse.gov.uk/company/%s/officers' % company_number
+    res = requests.get(url, headers=headers)
+    current_app.logger.info(res.json())
+    officers = res.json()
+
+    return (company, address, officers)
+

@@ -3,8 +3,50 @@
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
-        {{company}}
+        <div id="company-details">
+          <ul class="tabs">
+            <li><a href="#company-tab">Company</a></li>
+            <li><a href="#filings-tab">Filings</a></li>
+            <li><a href="#licences-tab">Licences</a></li>
+
+          </ul>
+          <div id="company-tab" class="tabs-panel">
+            <p>{{company.company_name}}</p>
+            <p>{{address.address_line_1}}<br>{{address.locality}}<br>{{address.postal_code}}</p>
+          </div>
+          <div id="filings-tab" class="tabs-panel">
+              <p>Some stuff about filings</p>
+          </div>
+          <div id="licences-tab" class="tabs-panel">
+              <p>Some stuff from approved premises</p>
+          </div>
+        </div>
       </div>
     </div>
 {% endblock %}
-
+{% block body_end %}
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script>
+    $(document).ready(function() {
+      //ripped off from http://www.jacklmoore.com/notes/jquery-tabs/
+      $('ul.tabs').each(function() {
+        var $active, $content, $links = $(this).find('a');
+        $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
+        $active.addClass('active');
+        $content = $($active[0].hash);
+      $links.not($active).each(function () {
+        $(this.hash).hide();
+      });
+      $(this).on('click', 'a', function(e) {
+        $active.removeClass('active');
+        $content.hide();
+        $active = $(this);
+        $content = $(this.hash);
+        $active.addClass('active');
+        $content.show();
+        e.preventDefault();
+        });
+      });
+    });
+  </script>
+{% endblock %}

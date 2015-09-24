@@ -3,7 +3,7 @@
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
-        {% if organisations %}
+        {% if organisations.count() > 0 %}
         <div id="results">
           <ul>
             {% for organisation in organisations %}
@@ -12,7 +12,7 @@
           </ul>
         </div>
         {% else %}
-          <p>No results</p>
+          <p>No results for {{name}}</p>
         {% endif %}
       </div>
     </div>

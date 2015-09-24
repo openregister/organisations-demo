@@ -35,9 +35,7 @@ def search():
     name = request.args['q'].strip()
     organisations = current_app.db.premises.find({'entry.name':
         {'$regex': name, '$options': 'i'}})
-    if not organisations:
-        abort(404)
-    return render_template('search.html', organisations=organisations)
+    return render_template('search.html', organisations=organisations, name=name)
 
 
 @frontend.route('/company/<company_number>')

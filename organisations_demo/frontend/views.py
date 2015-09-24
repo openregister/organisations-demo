@@ -55,25 +55,31 @@ def licences(company_number):
                            premises=premises)
 
 
-
 def _get_company_details(company_number):
     co_house_api_key = current_app.config['COMPANIES_HOUSE_API_KEY']
     headers = {'Authorization': 'Basic '+co_house_api_key}
-
-    url = 'https://api.companieshouse.gov.uk/company/%s' % company_number
-    res = requests.get(url, headers=headers)
-    current_app.logger.info(res.json())
-    company = res.json()
-
-    url = 'https://api.companieshouse.gov.uk/company/%s/registered-office-address' % company_number
-    res = requests.get(url, headers=headers)
-    address = res.json()
-
-    return (company, address)
+    try:
+        url = 'https://api.companieshouse.gov.uk/company/%s' % company_number
+        res = requests.get(url, headers=headers)
+        res.raise_for_status()
+        current_app.logger.info(res.json())
+        company = res.json()
+        url = 'https://api.companieshouse.gov.uk/company/%s/registered-office-address' % company_number
+        res = requests.get(url, headers=headers)
+        res.raise_for_status()
+        address = res.json()
+        return (company, address)
+    except Exception as e:
+        current_app.logger.info(e)
+        return abort(500)
 
 
 def _get_premises(company_number):
-    premises = current_app.db.premises.find_one({'entry.company': company_number})
-    current_app.logger.info(premises)
-    return premises
+    try:
+        premises = current_app.db.premises.find_one({'entry.company': company_number})
+        current_app.logger.info(premises)
+        return premises
+    except Exception as e:
+        current_app.logger.info(e)
+        return abort(500)
 

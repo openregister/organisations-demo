@@ -69,12 +69,6 @@ def _get_company_details(company_number):
     res = requests.get(url, headers=headers)
     address = res.json()
 
-    # url = 'https://api.companieshouse.gov.uk/company/%s/filing-history' % company_number
-    # res = requests.get(url, headers=headers)
-    # for item in res.json()['items']:
-    #     current_app.logger.info(item)
-    # filings = res.json()
-
     return (company, address)
 
 

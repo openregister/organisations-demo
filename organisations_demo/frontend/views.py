@@ -42,11 +42,18 @@ def search():
 
 @frontend.route('/company/<company_number>')
 def company(company_number):
-    company, address, filings = _get_company_details(company_number)
+    company, address = _get_company_details(company_number)
     return render_template('company.html',
                            company=company,
-                           address=address,
-                           filings=filings)
+                           address=address)
+
+
+@frontend.route('/company/<company_number>/licences')
+def licences(company_number):
+    premises = _get_premises(company_number)
+    return render_template('company-licences.html',
+                           premises=premises)
+
 
 
 def _get_company_details(company_number):
@@ -60,14 +67,19 @@ def _get_company_details(company_number):
 
     url = 'https://api.companieshouse.gov.uk/company/%s/registered-office-address' % company_number
     res = requests.get(url, headers=headers)
-    # current_app.logger.info(res.json())
     address = res.json()
 
-    url = 'https://api.companieshouse.gov.uk/company/%s/filing-history' % company_number
-    res = requests.get(url, headers=headers)
-    for item in res.json()['items']:
-        current_app.logger.info(item)
-    filings = res.json()
+    # url = 'https://api.companieshouse.gov.uk/company/%s/filing-history' % company_number
+    # res = requests.get(url, headers=headers)
+    # for item in res.json()['items']:
+    #     current_app.logger.info(item)
+    # filings = res.json()
 
-    return (company, address, filings)
+    return (company, address)
+
+
+def _get_premises(company_number):
+    premises = current_app.db.premises.find_one({'entry.company': company_number})
+    current_app.logger.info(premises)
+    return premises
 

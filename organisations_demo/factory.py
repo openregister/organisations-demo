@@ -12,6 +12,11 @@ from pymongo import MongoClient
 def asset_path_context_processor():
     return {'asset_path': '/static/'}
 
+def category_filter(s):
+    section = s.split(' ')[0]
+    activity = s.split(' ')[1]
+    return "%s %s" % (section, activity)
+
 def create_app(config_filename):
     ''' An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
@@ -21,6 +26,7 @@ def create_app(config_filename):
     register_errorhandlers(app)
     register_blueprints(app)
     app.context_processor(asset_path_context_processor)
+    app.jinja_env.filters['category_filter'] = category_filter
     register_db(app)
     return app
 

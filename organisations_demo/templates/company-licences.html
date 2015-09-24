@@ -1,0 +1,20 @@
+
+{% extends "govuk_template.html" %}
+{% block content %}
+
+  <div id="company-details">
+    <ul class="tabs">
+      <li><a href="/company/{{premises.entry.company}}">Company</a></li>
+      <li><a href="/company/{{premises.entry.company}}/licences" class="active">Licences</a></li>
+    </ul>
+    <div id="licences-tab" class="tabs-panel">
+        <h2 class="heading-small">Licences</h2>
+        <ul>
+          {% for licence in premises['licences'] %}
+            <li><a rel="external" href="http://food-establishment-category.openregister.org/food-establishment-category/{{licence|category_filter}}">{{licence}}</a></li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+
+{% endblock %}

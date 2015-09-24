@@ -7,7 +7,7 @@
         <div id="results">
           <ul>
             {% for organisation in organisations %}
-              <li>{{organisation.entry.name}}. Company number: <a href="/company/{{organisation.entry.company}}">{{organisation.entry.company}}</a></li>
+              <li><a href="/company/{{organisation.entry.company}}">{{organisation.entry.name}}. Company number: {{organisation.entry.company}}</a></li>
             {% endfor %}
           </ul>
         </div>

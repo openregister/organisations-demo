@@ -4,57 +4,24 @@
 
   <div id="company-details">
     <ul class="tabs">
-      <li><a href="#company-tab">Company</a></li>
-      <li><a href="#filings-tab">Filings</a></li>
-      <li><a href="#licences-tab">Licences</a></li>
+      <li><a href="/company/{{company.company_number}}" class="active">Company</a></li>
+      <li><a href="/company/{{company.company_number}}/licences">Licences</a></li>
 
     </ul>
     <div id="company-tab" class="tabs-panel">
-      <p>{{company.company_name}}</p>
-      <p>Company number: {{company.company_number}}</p>
-      <p>{{address.address_line_1}}<br>{{address.locality}}<br>{{address.postal_code}}</p>
+      <h1 class="heading-small">{{company.company_name}}</h1>
+      <p><a rel="external" href="https://beta.companieshouse.gov.uk/company/{{company.company_number}}">Company number: {{company.company_number}}</a></p>
+      <h2 class="heading-small">Address</h2>
+      <div class="address" itemscope="" itemtype="http://schema.org/PostalAddress">
+        <span itemprop="streetAddress">{{address.address_line_1}}</span><br>
+        <span itemprop="addressLocality">{{address.locality}}</span><br>
+        <span itemprop="postalCode">{{address.postal_code}}</span><br>
+        <span itemprop="addressCountry">GB</span>
+      </div>
+      <h2 class="heading-small">Accounts</h2>
       <p>Last accounts made up to: {{company.annual_return.last_made_up_to}}</p>
       <p>Next accounts made up to: {{company.annual_return.next_made_up_to}}</p>
       <p>Next accounts due: {{company.annual_return.next_due}}</p>
     </div>
-    <div id="filings-tab" class="tabs-panel">
-        {% if filings %}
-          <ul>
-          {% for item in filings['items'] %}
-            <li>{{item.description}} {{item.action_date}}</li>
-          {% endfor %}
-          </ul>
-        {% endif %}
-    </div>
-    <div id="licences-tab" class="tabs-panel">
-        <p>Some stuff from approved premises</p>
-    </div>
-  </div>
 
-{% endblock %}
-{% block body_end %}
-  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-  <script>
-    $(document).ready(function() {
-      //ripped off from http://www.jacklmoore.com/notes/jquery-tabs/
-      $('ul.tabs').each(function() {
-        var $active, $content, $links = $(this).find('a');
-        $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
-        $active.addClass('active');
-        $content = $($active[0].hash);
-      $links.not($active).each(function () {
-        $(this.hash).hide();
-      });
-      $(this).on('click', 'a', function(e) {
-        $active.removeClass('active');
-        $content.hide();
-        $active = $(this);
-        $content = $(this.hash);
-        $active.addClass('active');
-        $content.show();
-        e.preventDefault();
-        });
-      });
-    });
-  </script>
 {% endblock %}

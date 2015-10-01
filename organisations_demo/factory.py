@@ -48,5 +48,8 @@ def register_blueprints(app):
 
 
 def register_db(app):
-    db = MongoClient(app.config['MONGO_URI']).get_default_database()
+    if app.config['SETTINGS'] == 'config.DevelopmentConfig':
+        db = MongoClient(app.config['MONGO_URI'])['lookup']
+    else:
+        db = MongoClient(app.config['MONGO_URI']).get_default_database()
     app.db = db

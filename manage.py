@@ -16,12 +16,17 @@ manager.add_command('server', Server(host="0.0.0.0", port=port))
 
 
 @manager.command
-def populate_index():
+def load_local_data():
     import time
     premises_register = app.config['PREMISES_REGISTER']
     feed_url = '%s/feed.json' % premises_register
     page = 1
-    db = MongoClient(app.config['MONGO_URI']).get_default_database()
+
+    if app.config['SETTINGS'] == 'config.DevelopmentConfig':
+        db = MongoClient(app.config['MONGO_URI'])['lookup']
+    else:
+        db = MongoClient(app.config['MONGO_URI']).get_default_database()
+
     premises = db.premises
     while True:
         params = {'pageIndex': page, 'pageSize': 1000}
@@ -39,11 +44,12 @@ def populate_index():
 
 
 def attach_fsa_data(premises):
-    premises_url = 'http://products-of-animal-origin-premises.openregister.org/search'
+    premises_url = app.config['PRODUCTS_OF_ANIMAL_ORIGIN_PREMISES']+'/search'
     headers = {'Content-type': 'application/json'}
     params = {'_representation': 'json', '_query': premises['entry']['premises']}
-    section_url = 'http://products-of-animal-origin-section.openregister.org/products-of-animal-origin-section/'
-    activity_url = 'http://products-of-animal-origin-activity.openregister.org/products-of-animal-origin-activity/'
+    section_url = app.config['PRODUCTS_OF_ANIMAL_ORIGIN_SECTION']+'/products-of-animal-origin-section/'
+    activity_url = app.config['PRODUCTS_OF_ANIMAL_ORIGIN_ACTIVITY']+'/products-of-animal-origin-activity/'
+
     resp = requests.get(premises_url, headers=headers, params=params)
     if resp.status_code == 200:
         activities = resp.json()['entries'][0]['entry']['food-establishment-categories']

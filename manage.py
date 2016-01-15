@@ -19,7 +19,7 @@ manager.add_command('server', Server(host="0.0.0.0", port=port))
 def load_local_data():
     import time
     premises_register = app.config['PREMISES_REGISTER']
-    feed_url = '%s/feed.json' % premises_register
+    entries_url = '%s/entries.json' % premises_register
     page = 1
 
     if app.config['SETTINGS'] == 'config.DevelopmentConfig':
@@ -30,7 +30,7 @@ def load_local_data():
     premises = db.premises
     while True:
         params = {'pageIndex': page, 'pageSize': 1000}
-        res = requests.get(feed_url, params)
+        res = requests.get(entries_url, params)
         if res.json():
             for count, p in enumerate(res.json()):
                 if p['entry']['company']:
